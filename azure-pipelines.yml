@@ -1,0 +1,42 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  node_version: '20'
+
+steps:
+
+# 📥 Checkout Code
+- checkout: self
+
+# 🟢 Install Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: $(node_version)
+  displayName: 'Install Node.js'
+
+# 📦 Install Dependencies
+- script: npm install
+  displayName: 'Install Dependencies'
+
+# 🎭 Install Playwright Browsers
+- script: npx playwright install
+  displayName: 'Install Playwright Browsers'
+
+# 🧪 Run Tests
+- script: npx playwright test
+  displayName: 'Run RAG Tests'
+
+# 📊 Check Accuracy
+- script: node scripts/checkAccuracy.js
+  displayName: 'Check Accuracy Threshold'
+
+# 📁 Publish Reports
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(System.DefaultWorkingDirectory)'
+    artifactName: 'rag-report'
+  displayName: 'Publish Test Reports'
