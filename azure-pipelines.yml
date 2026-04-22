@@ -27,13 +27,17 @@ steps:
   displayName: 'Install Playwright Browsers'
 
 # 🧪 Run Tests
-- script: |
-    cd rag-playwright
-    npx playwright test tests/rag.spec.ts
+- script: npx playwright test rag-playwright/tests/rag.spec.ts
   displayName: 'Run RAG Tests'
 
-- script: dir tests
-  displayName: 'Check tests folder'
+- script: dir
+  displayName: 'Check root'
+
+- script: dir rag-playwright
+  displayName: 'Check project folder'
+
+- script: dir rag-playwright\tests
+  displayName: 'Check test folder'
 
 # 📊 Check Accuracy
 - script: node scripts/checkAccuracy.js
